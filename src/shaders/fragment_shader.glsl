@@ -1,13 +1,16 @@
 #version 330 core
 out vec4 FragColor;
 
+// Variabel penerima dari main.cpp
+uniform vec4 objectColor;
+uniform bool isLantai; 
+
 void main() {
-    // gl_FrontFacing bernilai true jika kita melihat sisi depan poligon
-    if (gl_FrontFacing) {
-        // Warna cokelat tanah untuk bagian atas
-        FragColor = vec4(0.45f, 0.30f, 0.15f, 1.0f);
-    } else {
-        // Warna hitam pekat untuk bagian bawah
+    if (isLantai && !gl_FrontFacing) {
+        // Khusus lantai: bagian bawah tetap hitam pekat
         FragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    } else {
+        // Untuk bagian atas lantai, kandang, dan ayam
+        FragColor = objectColor;
     }
 }
