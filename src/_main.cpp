@@ -5,7 +5,6 @@
 #include <sstream>
 #include <string>
 
-
 // Fungsi untuk membaca dan mengompilasi shader
 unsigned int createShader(const char* vertexPath, const char* fragmentPath) {
     std::string vertexCode;
@@ -78,20 +77,16 @@ unsigned int createShader(const char* vertexPath, const char* fragmentPath) {
     return ID;
 }
 
-
 int main() {
-    // 1. Inisialisasi GLFW
     if (!glfwInit()) {
         std::cerr << "Gagal inisialisasi GLFW" << std::endl;
         return -1;
     }
-    
-    // Konfigurasi agar menggunakan OpenGL versi 3.3 Core Profile
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // 2. Buat Jendela (Window)
     GLFWwindow* window = glfwCreateWindow(800, 600, "Simulasi Peternakan Ayam", NULL, NULL);
     if (!window) {
         std::cerr << "Gagal membuat jendela GLFW" << std::endl;
@@ -100,29 +95,26 @@ int main() {
     }
     glfwMakeContextCurrent(window);
 
-    // 3. Inisialisasi GLAD 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Gagal inisialisasi GLAD" << std::endl;
         return -1;
     }
 
     std::cout << "Versi OpenGL yang didukung: " << glGetString(GL_VERSION) << std::endl;
+
     // Memuat dan mengompilasi Shader Program
     unsigned int shaderProgram = createShader("../src/shaders/vertex_shader.glsl", "../src/shaders/fragment_shader.glsl");
-    
-    // ==========================================
-    // 4. DATA LANTAI / BIDANG DATAR
-    // ==========================================
+
     float vertices[] = {
-         0.5f,  0.5f, 0.0f,  // Kanan Atas
-         0.5f, -0.5f, 0.0f,  // Kanan Bawah
-        -0.5f, -0.5f, 0.0f,  // Kiri Bawah
-        -0.5f,  0.5f, 0.0f   // Kiri Atas 
+         0.5f,  0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f
     };
 
     unsigned int indices[] = {
-        0, 1, 3, // Segitiga pertama
-        1, 2, 3  // Segitiga kedua
+        0, 1, 3,
+        1, 2, 3
     };
 
     unsigned int VBO, VAO, EBO;
@@ -130,49 +122,38 @@ int main() {
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
 
-    // Ikat VAO dulu
     glBindVertexArray(VAO);
 
-    // Copy data vertices ke VBO
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    // Copy data indices ke EBO
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    // Beritahu OpenGL cara membaca data koordinat (location = 0)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    
-    // Lepas ikatan (unbinding) agar aman (opsional tapi disarankan)
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    // ==========================================
-    // 5. RENDER LOOP
-    // ==========================================
     while (!glfwWindowShouldClose(window)) {
-        // Bersihkan layar dengan warna biru langit
         glClearColor(0.5f, 0.8f, 0.9f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Gunakan/Aktifkan Shader Program
-        glUseProgram(shaderProgram);        
+        glUseProgram(shaderProgram);
 
-        // Menggambar objek lantai di setiap frame
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-        // Tukar buffer dan periksa event
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    // Bersihkan memori saat program ditutup
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
+    glDeleteProgram(shaderProgram);
 
     glfwTerminate();
     return 0;
