@@ -10,11 +10,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Tambahkan src/glad.c di sini
 add_executable(SimulasiPeternakan src/main.cpp src/glad.c)
 
-# Hubungkan (link) library OpenGL, GLFW, GLEW, dan Assimp
+# Hubungkan (link) library OpenGL, GLFW, dan Assimp
 target_link_libraries(SimulasiPeternakan
     GL
     glfw
     dl
-    GLEW
     assimp
 )
