@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/SimulasiPeternakan.dir/link.d CMakeFiles/SimulasiPeternakan.dir/src/main.cpp.o CMakeFiles/SimulasiPeternakan.dir/src/glad.c.o -o SimulasiPeternakan  -lGL -lglfw -ldl -lGLEW -lassimp

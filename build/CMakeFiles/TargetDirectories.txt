@@ -1,0 +1,3 @@
+/home/shatramaja/kuliah/grafkom/simulasi-peternakan/build/CMakeFiles/SimulasiPeternakan.dir
+/home/shatramaja/kuliah/grafkom/simulasi-peternakan/build/CMakeFiles/edit_cache.dir
+/home/shatramaja/kuliah/grafkom/simulasi-peternakan/build/CMakeFiles/rebuild_cache.dir
